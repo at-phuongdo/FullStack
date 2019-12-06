@@ -15,7 +15,8 @@ const App = () => {
   return (
     <div>
       <h1>Greetings</h1>
-      <Hello />    </div>
+      <Hello />
+    </div>
   )
 }
 
@@ -30,8 +31,17 @@ const App = () => {
     <div>
       <h1>Greetings</h1>
       <Hello />
-      <Hello />      <Hello />    </div>
+      <Hello />
+      <Hello />
+    </div>
   )
 }
 ```
 4. Props
+props = {
+  name: 'Arto Hellas',
+  age: 35,
+}
+
+const { name, age } = props #name = 'Arto Hellas', age = 35
+5.
