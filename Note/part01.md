@@ -47,3 +47,4 @@ const { name, age } = props #name = 'Arto Hellas', age = 35
 5. useState
 const [counter, setCounter] = useState(0)
 => counter = 0, setCounter(): function update `counter` value
+6. `Event handlers` must ALWAYS be a function or a reference to a function
