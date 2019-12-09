@@ -44,4 +44,6 @@ props = {
 }
 
 const { name, age } = props #name = 'Arto Hellas', age = 35
-5.
+5. useState
+const [counter, setCounter] = useState(0)
+=> counter = 0, setCounter(): function update `counter` value
