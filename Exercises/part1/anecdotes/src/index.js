@@ -2,38 +2,38 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Anecdotes = ({ name, vote }) => {
-	return (
-		<div>
+  return (
+    <div>
       <p>{name}</p>
-			<p>has {vote} vote</p>
-		</div>
-	)
+      <p>has {vote} vote</p>
+    </div>
+  )
 }
 
 const App = (props) => {
-	const [selected, setSelected] = useState(0)
-	const [vote, setVote] = useState([0, 0, 0, 0, 0, 0])
-	const copy = [...vote]
-	
-	const handleClickAnecdotes = () => {
-		setSelected(Math.floor(Math.random() * anecdotes.length))
-	}
+  const [selected, setSelected] = useState(0)
+  const [vote, setVote] = useState([0, 0, 0, 0, 0, 0])
+  const copy = [...vote]
 
-	const handleVote = () => {
-		copy[selected] += 1
-		setVote(copy)
-	}
+  const handleClickAnecdotes = () => {
+    setSelected(Math.floor(Math.random() * anecdotes.length))
+  }
 
-	let indexOfAnecdoctesLargestVote = vote.indexOf(Math.max(...vote))
+  const handleVote = () => {
+    copy[selected] += 1
+    setVote(copy)
+  }
+
+  let indexOfAnecdoctesLargestVote = vote.indexOf(Math.max(...vote))
 
   return (
     <div>
-      <Anecdotes name={props.anecdotes[selected]} vote={vote[selected]}/>
-			<div>
-				<button onClick={handleVote}>Vote</button>
-				<button onClick={handleClickAnecdotes}>Next anecdotes</button>
-			</div>
-			<Anecdotes name={props.anecdotes[indexOfAnecdoctesLargestVote]} vote={vote[indexOfAnecdoctesLargestVote]}/>
+      <Anecdotes name={props.anecdotes[selected]} vote={vote[selected]} />
+      <div>
+        <button onClick={handleVote}>Vote</button>
+        <button onClick={handleClickAnecdotes}>Next anecdotes</button>
+      </div>
+      <Anecdotes name={props.anecdotes[indexOfAnecdoctesLargestVote]} vote={vote[indexOfAnecdoctesLargestVote]} />
     </div>
   )
 }
