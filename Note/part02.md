@@ -19,3 +19,8 @@ const rows = () => notes.map((note, i) =>
   </li>
 )
 ```
+# b. Form
+## 1.
+There is no default action that occurs on an input change, unlike on a form submission.
+=> we need to call the `event.preventDefault()` with onSubmit
+=> we don't need to call the `event.preventDefault()` with onChange
