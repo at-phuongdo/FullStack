@@ -24,3 +24,23 @@ const rows = () => notes.map((note, i) =>
 There is no default action that occurs on an input change, unlike on a form submission.
 => we need to call the `event.preventDefault()` with onSubmit
 => we don't need to call the `event.preventDefault()` with onChange
+# c. Getting data from server
+The code does not execute synchronously "from top to bottom", but does so `asynchronously`. JavaScript calls the event handler that was registered for the request at some point.
+## 1. Run json server
+
+```
+npm install axios --save
+npm install json-server --save-dev
+```
+In package.json
+```
+  // ... 
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "server": "json-server -p3001 db.json"
+  }
+}
+```
