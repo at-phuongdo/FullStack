@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Person'
+import Notification from './components/Notification'
 import personService from './services/person'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchWord, setSearchWord] = useState('')
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -24,17 +27,24 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    
+
     const existedPerson = persons.find(person => person.name === newName)
-    
+
     if (!!existedPerson) {
       const isUpdate = window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`)
-      
+
       if (isUpdate) {
         personService
         .update(existedPerson.id, newObject)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id !== existedPerson.id ? person : returnedPerson))
+        })
+        .catch(error => {
+          setErrorMessage(`Person '${existedPerson.name}' was already removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(n => n.id !== existedPerson.id))
         })
       }
     } else if (newName !== '' && newNumber !== '') {
@@ -43,6 +53,12 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
+          setMessage(
+            `Added '${returnedPerson.name}'`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     } else {
       alert('Please input')
@@ -81,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} errorMessage={errorMessage} />
       <Filter searchWord={searchWord} onSearchWordChange={handleSearchWorldChange} />
       <h2>Add a new</h2>
       <PersonForm
