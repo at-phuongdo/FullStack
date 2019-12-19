@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
 
 let notes = [
@@ -57,7 +59,7 @@ app.post('/notes', (request, response) => {
 
   if (!body.content) {
     return response.status(400).json({ 
-      error: 'content missing' 
+      error: 'content is missing' 
     })
   }
 
@@ -80,7 +82,7 @@ app.delete('/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
-const port = 3001
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
