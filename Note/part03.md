@@ -52,3 +52,15 @@ package.json file:
 }
 ```
 and run command: `npm run watch`
+
+# b. Deploying app to internet
+
+### Middleware
+If next was called without a parameter, then the execution would simply move onto the next route or middleware. If the next function is called with a parameter, then the execution will continue to the error handler middleware.
+
+# c. Mongodb
+npm install mongoose --save
+```node mongo.js password```
+
+## The order of middleware loading
+
