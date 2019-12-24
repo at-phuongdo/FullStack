@@ -15,12 +15,12 @@ The repository for MERN + GraphQL
 - [x] Forms
 - [x] Getting data from server
 - [x] Altering data in server
-- [ ] Adding style to React app
+- [x] Adding style to React app
 ## Part 3: Programming a server with NodeJS and Express
-- [ ] Node.js and Express
-- [ ] Deploying app to internet
-- [ ] Saving data to MongoDB
-- [ ] Validation and ESLint
+- [x] Node.js and Express
+- [x] Deploying app to internet
+- [x] Saving data to MongoDB
+- [x] Validation and ESLint
 ## Part 4: Testing Express server, user administration
 ## Part 5: Testing React apps, custom hooks
 ## Part 6: State management with Redux
