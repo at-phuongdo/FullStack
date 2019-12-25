@@ -62,5 +62,6 @@ If next was called without a parameter, then the execution would simply move ont
 npm install mongoose --save
 ```node mongo.js password```
 
+npm install dotenv --save
 ## The order of middleware loading
 
