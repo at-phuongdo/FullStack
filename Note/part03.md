@@ -65,3 +65,10 @@ npm install mongoose --save
 npm install dotenv --save
 ## The order of middleware loading
 
+# d. Validation
+Install ESlint
+```
+npm install eslint --save-dev
+node_modules/.bin/eslint --init
+```
+
