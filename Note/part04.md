@@ -20,3 +20,9 @@ npx jest -t 'notes' --runInBand
 User.find({}).populate('notes', {content: 1, date: 1}) //Select content, date from ...
 User.find({}).populate('notes', {content: 0, date: 0}) //remove content, date from result...
 ```
+
+# d. Token authentication
+Install JSON web token
+```
+npm install jsonwebtoken --save
+```
