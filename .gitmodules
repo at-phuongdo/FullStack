@@ -1,3 +1,3 @@
-[submodule "Examples/part3"]
-	path = Examples/part3
+[submodule "Heroku"]
+	path = Heroku
 	url = https://github.com/at-phuongdo/FullStack-Heroku
