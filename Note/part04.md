@@ -26,3 +26,8 @@ Install JSON web token
 ```
 npm install jsonwebtoken --save
 ```
+
+```
+ const decodedToken = jwt.verify(token, process.env.SECRET)
+ const user = await User.findById(decodedToken.id)
+```
