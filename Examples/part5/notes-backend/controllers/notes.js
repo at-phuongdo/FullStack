@@ -28,13 +28,13 @@ notesRouter.post('/', async (request, response, next) => {
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    user: user._id
+    // user: user._id
   })
 
   try {
     const savedNote = await note.save()
-    user.notes = user.notes.concat(savedNote._id)
-    await user.save()
+    // user.notes = user.notes.concat(savedNote._id)
+    // await user.save()
     response.json(savedNote.toJSON())
   }
   catch(exception) {

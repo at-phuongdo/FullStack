@@ -1,10 +1,10 @@
 {
-  "name": "login-front-end",
+  "name": "notes-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:ui": "rm -rf build && cd ../notes-frontend && npm run build --prod && cp -r build ../login-front-end",
+    "build:ui": "rm -rf build && cd ../b-props-children-proptypes && npm run build --prod && cp -r build ../notes-backend",
     "start": "NODE_ENV=production node index.js",
     "watch": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
