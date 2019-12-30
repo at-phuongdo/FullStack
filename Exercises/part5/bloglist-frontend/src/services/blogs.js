@@ -17,8 +17,12 @@ const create = async newBlog => {
   return response.data
 }
 
+const update = async (id, newObject) => {
+
+}
+
 const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-export default { getAll, create, setToken }
+export default { getAll, create, update, setToken }

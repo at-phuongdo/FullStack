@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import Blog from './components/Blog'
 import Notifications from './components/Notifications'
+import Togglable from './components/Togglable'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,6 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const blogFormRef = React.createRef()
 
   useEffect(() => {
     blogService
@@ -63,6 +66,7 @@ const App = () => {
 
   const handleCreateBlog  = async (event) => {
     event.preventDefault()
+    blogFormRef.current.toggleVisibility()
     try {
       const blogCreated = await blogService.create({
         title, author, url
@@ -103,37 +107,24 @@ const App = () => {
   )
 
   const createBlogForm = () => (
-    <form onSubmit={handleCreateBlog}>
-      <div>
-        Title
-          <input
-          type="text"
-          value={title}
-          name="title"
-          onChange={({ target }) => setTitle(target.value)}
-          />
-      </div>
-      <div>
-        Author
-          <input
-          type="text"
-          value={author}
-          name="author"
-          onChange={({ target }) => setAuthor(target.value)}
-          />
-      </div>
-      <div>
-        Url
-          <input
-          type="text"
-          value={url}
-          name="url"
-          onChange={({ target }) => setUrl(target.value)}
-          />
-      </div>
-      <button type="submit">Create</button>
-    </form>
+    <Togglable buttonLabel="New blog" ref={blogFormRef}>
+      <NewBlogForm
+        handleSubmit={handleCreateBlog}
+        handleTitleChange={({ target }) => setTitle(target.value)}
+        handleAuthorChange={({ target }) => setAuthor(target.value)}
+        handleUrlChange={({ target}) => setUrl(target.value)}
+        title={title}
+        author={author}
+        url={url}
+      />
+    </Togglable>
   )
+
+  const handleLikeBlog = (blog) => async () => {
+    // blog.likes = blog.likes + 1
+    // console.log(blog)
+    // const blogUpdated = await blogService.update(blog.id, blog)
+  }
 
   return (
     <div>
@@ -147,7 +138,7 @@ const App = () => {
           {createBlogForm()}
           <ul>
             {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} handleLike={handleLikeBlog} />
             )}
           </ul>
         </div>
