@@ -39,7 +39,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
 
       window.localStorage.setItem(
@@ -76,6 +76,28 @@ const App = () => {
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
+    }
+    catch (error) {
+      setErrorMessage(error)
+    }
+  }
+
+  const handleLikeBlog = (id) => async () => {
+    const blog = blogs.find(blog => blog.id === id)
+    const newBlog = {...blog, likes: blog.likes + 1}
+    try {
+      const blogUpdated = await blogService.update(id, newBlog)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : blogUpdated))
+    }
+    catch (error) {
+      setErrorMessage(error)
+    }
+  }
+
+  const handleRemove = (id) => async () => {
+    try {
+      await blogService.remove(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
     }
     catch (error) {
       setErrorMessage(error)
@@ -120,11 +142,17 @@ const App = () => {
     </Togglable>
   )
 
-  const handleLikeBlog = (blog) => async () => {
-    // blog.likes = blog.likes + 1
-    // console.log(blog)
-    // const blogUpdated = await blogService.update(blog.id, blog)
-  }
+  const blogsSortByLikes = blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
+
+  const rows = () =>
+    blogsSortByLikes.map(blog =>
+      <Blog
+        key={blog.id}
+        blog={blog}
+        handleLike={handleLikeBlog}
+        handleRemove={handleRemove}
+      />
+    )
 
   return (
     <div>
@@ -137,9 +165,7 @@ const App = () => {
           <h3>Create blog</h3>
           {createBlogForm()}
           <ul>
-            {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} handleLike={handleLikeBlog} />
-            )}
+            {rows()}
           </ul>
         </div>
       }

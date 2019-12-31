@@ -9,10 +9,8 @@ blogsRoute.get('/', async (request, response) => {
 })
 
 blogsRoute.post('/', async (request, response, next) => {
-  
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    console.log(decodedToken)
     if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
@@ -23,7 +21,7 @@ blogsRoute.post('/', async (request, response, next) => {
       title: body.title,
       author: body.author,
       url: body.url,
-      likes: body.likes,
+      likes: body.likes || 0,
       user: user._id
     })
 
@@ -45,12 +43,15 @@ blogsRoute.delete('/:id', async (request, response, next) => {
     }
 
     const userId = decodedToken.id
+    const user = await User.findById(userId)
     const blog = await Blog.findById(request.params.id)
 
     if (!blog) {
       response.status(401).json({ error: 'the blog deleted' })
     } else if ( blog.user.toString() === userId.toString() ) {
       await Blog.findByIdAndRemove(request.params.id)
+      user.blogs = user.blogs.filter(blogId => blogId != request.params.id )
+      await user.save()
       response.status(204).end()
     } else {
       response.status(401).json({ error: 'permission denined' })
@@ -62,14 +63,16 @@ blogsRoute.delete('/:id', async (request, response, next) => {
 
 blogsRoute.put('/:id', async (request, response, next) => {
   const body = request.body
+
   const blog = {
     title: body.title,
     author: body.author,
-    url: body.url
+    url: body.url,
+    likes: body.likes
   }
-  try {
-    const blogUpdated = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
 
+  try {
+    const blogUpdated = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true }).populate('user', {blogs: 0})
     response.json(blogUpdated.toJSON())
   }
   catch(exception) {
