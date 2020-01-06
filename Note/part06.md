@@ -66,3 +66,9 @@ We can get the content of the new note straight from the form field. Because the
 Functions that create actions are called action creators.(addNote())
 
 ### Passing the state using props
+
+# b.More reducer and connect
+
+```
+npm install --save react-redux
+```

@@ -1,22 +1,29 @@
 import React from 'react';
 import { addVote } from '../reducers/anecdoteReducer'
+import { votedMessage, clearMessage } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
-  const anecdotes = props.store.getState()
+  const { anecdotes, filter} = props.store.getState()
 
-  const vote = (id) => {
-    props.store.dispatch(addVote(id))
+  const vote = (anecdote) => {
+    props.store.dispatch(addVote(anecdote.id))
+    props.store.dispatch(votedMessage(anecdote.content))
+    setTimeout(() => {
+      props.store.dispatch(clearMessage())
+    }, 5000)
   }
+
+  const anecdoteToShow = anecdotes.filter(anecdote => anecdote.content.includes(filter))
   return (
     <div>
-      {anecdotes.map(anecdote =>
+      {anecdoteToShow.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}
