@@ -68,7 +68,18 @@ Functions that create actions are called action creators.(addNote())
 ### Passing the state using props
 
 # b.More reducer and connect
+## Connect
 
 ```
 npm install --save react-redux
 ```
+
+`Provider` là một component của react được cung cấp bởi thư viện react-redux. Nó dùng cho 1 mục đích duy nhất đó là **cung cấp store cho những component con của nó**
+
+```
+connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options]) 
+```
+
+`Điều quan trọng là chỉ có những component nằm bên trong Providers mới có thể connect`
+
+**Hàm mapStateToProps là một bộ lọc (filter) sử dụng để lấy (select) những thứ trong cái thùng chứa mà component yêu cầu. Những thứ được select trở thành properties của component. Nhưng mapStateToProps() thôi là chưa đủ, bởi vì hàm này chỉ lấy được những thứ được yêu cầu trong thùng chứa mà không biết được thùng chứa đó nằm ở đâu. connect() sẽ làm điều còn thiếu, hàm này biết vị trí của thùng chứa và truyền (pass) nó vào hàm mapStateToProps. Vì vậy, component có thể lấy được chính xác những gì nó cần.**
