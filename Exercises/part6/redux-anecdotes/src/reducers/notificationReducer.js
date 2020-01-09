@@ -1,33 +1,30 @@
 const notificationReducer = (state = '', action) => {
   switch(action.type) {
-    case 'VOTED':
-      return `You voted '${action.content}'`
-    case 'CREATED':
-      return `You created '${action.content}'`
-    case 'CLEARED':
+    case 'SET_NOTIFICATION':
+      return [...state, action.data.content]
+    case 'CLEAR_NOTIFICATION':
       return ''
     default:
       return state
   }
 }
 
-export const votedMessage = (content) => {
-  return {
-    type: 'VOTED',
-    content
+export const setNotifcation = (content, time) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: {
+        content,
+        time
+      }
+    })
+    setTimeout(() => { dispatch({type: 'CLEAR_NOTIFICATION'}) } , time)
   }
 }
 
-export const createdMessage = (content) => {
+export const clearNotification = () => {
   return {
-    type: 'CREATED',
-    content
-  }
-}
-
-export const clearMessage = () => {
-  return {
-    type: 'CLEARED'
+    type: 'CLEAR_NOTIFICATION'
   }
 }
 

@@ -83,3 +83,31 @@ connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])
 `Điều quan trọng là chỉ có những component nằm bên trong Providers mới có thể connect`
 
 **Hàm mapStateToProps là một bộ lọc (filter) sử dụng để lấy (select) những thứ trong cái thùng chứa mà component yêu cầu. Những thứ được select trở thành properties của component. Nhưng mapStateToProps() thôi là chưa đủ, bởi vì hàm này chỉ lấy được những thứ được yêu cầu trong thùng chứa mà không biết được thùng chứa đó nằm ở đâu. connect() sẽ làm điều còn thiếu, hàm này biết vị trí của thùng chứa và truyền (pass) nó vào hàm mapStateToProps. Vì vậy, component có thể lấy được chính xác những gì nó cần.**
+
+# c. Communication with server
+## 1. Redux-thunk
+- Redux Thunk là một Middleware cho phép bạn viết các Action trả về một function thay vì một plain javascript object bằng cách trì hoãn việc đưa action đến reducer.
+- Redux Thunk được sử dụng để xử lý các logic bất đồng bộ phức tạp cần truy cập đến Store hoặc đơn giản là việc lấy dữ liệu như Ajax request.
+
+```
+npm install --save redux-thunk
+```
+
+store.js
+
+```
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
+
+import noteReducer from './reducers/noteReducer'
+import filterReducer from './reducers/filterReducer'
+
+const reducer = combineReducers({
+  notes: noteReducer,
+  filter: filterReducer,
+})
+
+const store = createStore(reducer, applyMiddleware(thunk))
+
+export default store
+```
