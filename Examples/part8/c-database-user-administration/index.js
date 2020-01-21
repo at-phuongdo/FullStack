@@ -1,6 +1,7 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const jwt = require('jsonwebtoken')
-
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 const mongoose = require('mongoose')
 const Person = require('./models/person')
 const User = require('./models/user')
@@ -32,6 +33,7 @@ const typeDefs = gql`
     street: String
     city: String
     address: Address
+    friendOf: [User!]!
     id: ID!
   }
 
@@ -79,6 +81,10 @@ const typeDefs = gql`
       name: String!
     ): User
   }
+
+  type Subscription {
+    personAdded: Person!
+  } 
 `
 
 const resolvers = {
@@ -102,6 +108,15 @@ const resolvers = {
         street: root.street,
         city: root.city
       }
+    },
+    friendOf: async (root) => {
+      const friends = await User.find({
+        friends: {
+          $in: [root._id]
+        } 
+      })
+
+      return friends
     }
   },
   Mutation: {
@@ -123,6 +138,8 @@ const resolvers = {
         })
       }
   
+      pubsub.publish('PERSON_ADDED', { personAdded: person })
+
       return person
     },
     editNumber: async (root, args) => {
@@ -178,7 +195,12 @@ const resolvers = {
   
       return currentUser
     }
-  }
+  },
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterator(['PERSON_ADDED'])
+    },
+  },
 }
 
 const server = new ApolloServer({
@@ -196,6 +218,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

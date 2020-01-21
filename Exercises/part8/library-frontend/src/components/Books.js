@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Books = ({ show, result }) => {
+  const [ filter, setFilter ] = useState('all')
+
   if (!show) {
     return null
   }
-
+  
   if (result.loading) {
     return <div>loading ... </div>
   }
+
+  let genres_array = result.data.allBooks.map(book => book.genres).flat()
+  const genres_uniq = [...new Set(genres_array)]
+  const allBooks = result.data.allBooks
+  const booksToShow = filter === 'all'
+    ? allBooks
+    : allBooks.filter(book => book.genres.includes(filter))
 
   return (
     <div>
@@ -24,7 +33,7 @@ const Books = ({ show, result }) => {
               published
             </th>
           </tr>
-          {result.data.allBooks.map(a =>
+          {booksToShow.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -33,6 +42,10 @@ const Books = ({ show, result }) => {
           )}
         </tbody>
       </table>
+      {genres_uniq.map(genre =>
+        <button key={genre} onClick={() => setFilter(genre)}>{genre}</button>
+      )}
+      <button onClick={() => setFilter('all')}>All genres</button>
     </div>
   )
 }
