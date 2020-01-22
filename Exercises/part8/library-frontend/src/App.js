@@ -4,7 +4,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Recommend from './components/Recommend'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useSubscription, useApolloClient } from '@apollo/react-hooks'
 import LoginForm from './components/LoginForm'
 import './index.css'
 
@@ -77,6 +77,14 @@ const LOGIN = gql`
   }
 `
 
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+    }
+  }
+`
+
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
@@ -123,6 +131,12 @@ const App = () => {
   <div style={{ color: 'red' }}>
     {errorMessage}
   </div>
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData)
+    }
+  })
 
   return (
     <div>

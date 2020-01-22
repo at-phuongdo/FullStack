@@ -88,7 +88,6 @@ const resolvers = {
       return Author.find({}).populate('book', {title: 1})
     },
     me: (root, args, context) => {
-      console.log(context.currentUser);
       return context.currentUser
     }
   },
@@ -150,7 +149,7 @@ const resolvers = {
     },
     createUser: (root, args) => {
       const user = new User({ username: args.username })
-  
+
       return user.save()
         .catch(error => {
           throw new UserInputError(error.message, {
@@ -164,12 +163,12 @@ const resolvers = {
       if ( !user || args.password !== 'secred' ) {
         throw new UserInputError("wrong credentials")
       }
-  
+
       const userForToken = {
         username: user.username,
         id: user._id,
       }
-  
+
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
   },
